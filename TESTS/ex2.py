@@ -1,11 +1,17 @@
 '''
 Linear regression on red wine quality
 '''
+
+import matplotlib.pyplot as plt
+
+
+
 # TODO: get data
 import pandas as pd
 
 df = pd.read_csv("winequality-red.csv", delimiter=";")
-
+df = df.drop(['free sulfur dioxide', 'total sulfur dioxide'], axis=1)
+print df.columns
 # TODO: Specify testing and trainig sets
 
 train_idx = [i for i in range(1550,1599)]
@@ -34,3 +40,18 @@ actual = list(test.quality)
 from sklearn.metrics import accuracy_score
 
 print accuracy_score(actual, predict)
+
+corr = df.corr()
+
+val = 0
+
+for cat in corr:
+    val += abs(corr[cat])
+
+print val
+
+'''
+plt.imshow(corr, cmap=plt.cm.Blues, interpolation='nearest')
+plt.colorbar()
+plt.show()
+'''
