@@ -8,6 +8,14 @@ import pandas as pd
 
 df = pd.read_csv("winequality-red.csv", delimiter=";")
 
+def do_pca(data):
+    from sklearn.decomposition import PCA
+
+    pca = PCA(n_components=len(data.columns))
+
+    return pca.fit_transform(data)
+
+df = pd.DataFrame(do_pca(df))
 # TODO: Specify testing and trainig sets
 
 train_idx = [i for i in range(1550,1599)]
@@ -21,27 +29,8 @@ test = test.reset_index(drop=True)
 from sklearn import linear_model
 
 clf = linear_model.LinearRegression()
-clf.fit(train.drop("quality",axis=1),train.quality)
+clf.fit(train.drop(11,axis=1),train[11])
 
 # TODO: Assess prediction ability
 
-predict = list(pd.to_numeric(pd.Series(clf.predict(test.drop('quality',axis=1)))))
-
-for i in range(len(predict)):
-    predict[i] = int(round(predict[i],0))
-
-actual = list(test.quality)
-
-from sklearn.metrics import accuracy_score
-
-print accuracy_score(actual, predict)
-
-
-'''
-# TODO: plot
-import matplotlib.pyplot as plt
-
-plt.imshow(corr, cmap=plt.cm.Blues, interpolation='nearest')
-plt.colorbar()
-plt.show()
-'''
+result = clf.predict(test.drop(11,axis=1))
