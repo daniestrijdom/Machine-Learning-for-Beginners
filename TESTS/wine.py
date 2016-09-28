@@ -10,7 +10,7 @@ df2 = pd.read_csv("winequality-white.csv", delimiter=";")
 df2['type'] = 0
 
 df = df1.append(df2)
-
+df.to_csv('wine-all.csv')
 train_len = int(round(len(df)*0.8,0))
 test_len = len(df) - train_len
 
